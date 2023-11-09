@@ -210,6 +210,10 @@ export function onAuthStateChanged(
 export function useDeviceLanguage(auth: Auth): void {
   getModularInstance(auth).useDeviceLanguage();
 }
+export function updateApiHost(auth: Auth, apiHost: string): void {
+  getModularInstance(auth).updateApiHost(apiHost);
+}
+
 /**
  * Asynchronously sets the provided user as {@link Auth.currentUser} on the
  * {@link Auth} instance.
@@ -295,6 +299,18 @@ export {
   verifyBeforeUpdateEmail
 } from './strategies/email';
 export { signInWithPasskey, enrollPasskey } from './strategies/passkey';
+export {
+  debugCreateCredential,
+  debugGetCredential,
+  debugPrepareStartPasskeyEnrollmentRequest,
+  debugGetStartPasskeyEnrollmentResponse,
+  debugPrepareFinalizePasskeyEnrollmentRequest,
+  debugGetFinalizePasskeyEnrollmentResponse,
+  debugPrepareStartPasskeySignInRequest,
+  debugGetStartPasskeySignInResponse,
+  debugPrepareFinalizePasskeySignInRequest,
+  debugGetFinalizePasskeySignInResponse
+} from './strategies/passkey';
 
 // core
 export { ActionCodeURL, parseActionCodeURL } from './action_code_url';

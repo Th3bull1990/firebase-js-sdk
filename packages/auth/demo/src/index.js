@@ -75,7 +75,17 @@ import {
   initializeRecaptchaConfig,
   validatePassword,
   enrollPasskey,
-  signInWithPasskey
+  signInWithPasskey,
+  debugCreateCredential,
+  debugGetCredential,
+  debugPrepareStartPasskeyEnrollmentRequest,
+  debugGetStartPasskeyEnrollmentResponse,
+  debugPrepareFinalizePasskeyEnrollmentRequest,
+  debugGetFinalizePasskeyEnrollmentResponse,
+  debugPrepareStartPasskeySignInRequest,
+  debugGetStartPasskeySignInResponse,
+  debugPrepareFinalizePasskeySignInRequest,
+  debugGetFinalizePasskeySignInResponse
 } from '@firebase/auth';
 
 import { config } from './config';
@@ -532,6 +542,89 @@ function onEnrollPasskey() {
 function onSignInWithPasskey() {
   const name = $('#signin-passkey-name').val();
   signInWithPasskey(auth, name).then(onAuthSuccess, onAuthError);
+}
+
+// Enroll
+async function onPrepareStartEnrollRequest() {
+  const requestStr = await debugPrepareStartPasskeyEnrollmentRequest(
+    activeUser()
+  );
+  $('#start-enroll-request').val(requestStr);
+}
+
+async function onGetStartEnrollResponse() {
+  const requestStr = $('#start-enroll-request').val();
+  const responseStr = await debugGetStartPasskeyEnrollmentResponse(
+    activeUser(),
+    requestStr
+  );
+  $('#start-enroll-response').val(responseStr);
+}
+
+async function onCreateCredentialEnroll() {
+  const name = $('#name-enroll').val();
+  const responseStr = $('#start-enroll-response').val();
+  const credentialStr = await debugCreateCredential(name, responseStr);
+  $('#credential-enroll').val(credentialStr);
+}
+
+async function onPrepareFinalizeEnrollRequest() {
+  const name = $('#name-enroll').val();
+  const credentialStr = $('#credential-enroll').val();
+  const requestStr = await debugPrepareFinalizePasskeyEnrollmentRequest(
+    activeUser(),
+    name,
+    credentialStr
+  );
+  $('#finalize-enroll-request').val(requestStr);
+}
+
+async function onGetFinalizeEnrollResponse() {
+  const requestStr = $('#finalize-enroll-request').val();
+  const responseStr = await debugGetFinalizePasskeyEnrollmentResponse(
+    activeUser(),
+    requestStr
+  );
+  $('#finalize-enroll-response').val(responseStr);
+}
+
+// Sign in
+async function onPrepareStartSignInRequest() {
+  const requestStr = await debugPrepareStartPasskeySignInRequest();
+  $('#start-signin-request').val(requestStr);
+}
+
+async function onGetStartSignInResponse() {
+  const requestStr = $('#start-signin-request').val();
+  const responseStr = await debugGetStartPasskeySignInResponse(
+    auth,
+    requestStr
+  );
+  $('#start-signin-response').val(responseStr);
+}
+
+async function onGetCredentialSignIn() {
+  const name = $('#name-signin').val();
+  const responseStr = $('#start-signin-response').val();
+  const credentialStr = await debugGetCredential(name, responseStr);
+  $('#credential-signin').val(credentialStr);
+}
+
+async function onPrepareFinalizeSignInRequest() {
+  const credentialStr = $('#credential-signin').val();
+  const requestStr = await debugPrepareFinalizePasskeySignInRequest(
+    credentialStr
+  );
+  $('#finalize-signin-request').val(requestStr);
+}
+
+async function onGetFinalizeSignInResponse() {
+  const requestStr = $('#finalize-signin-request').val();
+  const responseStr = await debugGetFinalizePasskeySignInResponse(
+    auth,
+    requestStr
+  );
+  $('#finalize-signin-response').val(responseStr);
 }
 
 /**
@@ -1991,6 +2084,14 @@ function onCopyLastUser() {
 /** Applies selected auth settings change. */
 function onApplyAuthSettingsChange() {
   try {
+    const prodApiHost = 'identitytoolkit.googleapis.com';
+    const stagingApiHost = 'staging-identitytoolkit.sandbox.googleapis.com';
+    if ($('input[name=api-host]:checked').val() === 'prod') {
+      auth.updateApiHost(prodApiHost);
+    } else {
+      auth.updateApiHost(stagingApiHost);
+    }
+
     auth.settings.appVerificationDisabledForTesting =
       $('input[name=enable-app-verification]:checked').val() === 'No';
     alertSuccess('Auth settings changed');
@@ -2269,6 +2370,25 @@ function initApp() {
   $('#send-password-reset-email').click(onSendPasswordResetEmail);
   $('#verify-password-reset-code').click(onVerifyPasswordResetCode);
   $('#confirm-password-reset').click(onConfirmPasswordReset);
+
+  // Debug
+  // Enroll
+  $('#prepare-start-enroll-request').click(onPrepareStartEnrollRequest);
+  $('#get-start-enroll-response').click(onGetStartEnrollResponse);
+
+  $('#create-credential-enroll').click(onCreateCredentialEnroll);
+
+  $('#prepare-finalize-enroll-request').click(onPrepareFinalizeEnrollRequest);
+  $('#get-finalize-enroll-response').click(onGetFinalizeEnrollResponse);
+
+  // SignIn
+  $('#prepare-start-signin-request').click(onPrepareStartSignInRequest);
+  $('#get-start-signin-response').click(onGetStartSignInResponse);
+
+  $('#get-credential-signin').click(onGetCredentialSignIn);
+
+  $('#prepare-finalize-signin-request').click(onPrepareFinalizeSignInRequest);
+  $('#get-finalize-signin-response').click(onGetFinalizeSignInResponse);
 
   $('#get-provider-data').click(onGetProviderData);
   $('#enroll-passkey').click(onEnrollPasskey);
