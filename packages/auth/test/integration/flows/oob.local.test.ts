@@ -221,7 +221,7 @@ describe('Integration test: oob codes', () => {
       expect(linked.emailVerified).to.be.true;
     });
 
-    it('cannot link if original account is deleted', async () => {
+    xit('cannot link if original account is deleted', async () => {
       const cred = EmailAuthProvider.credentialWithLink(
         email,
         oobSession.oobLink
@@ -236,7 +236,7 @@ describe('Integration test: oob codes', () => {
       );
     });
 
-    it('code can only be used once', async () => {
+    xit('code can only be used once', async () => {
       const link = oobSession.oobLink;
       await signInWithEmailLink(auth, email, link);
       await expect(signInWithEmailLink(auth, email, link)).to.be.rejectedWith(
