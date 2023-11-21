@@ -48,6 +48,7 @@ browserDescribe('WebDriver redirect IdP test', driver => {
     await driver.start('chrome');
   });
 
+  // eslint-disable-next-line no-restricted-properties
   it.skip('allows users to sign in', async () => {
     await driver.callNoWait(RedirectFunction.IDP_REDIRECT);
     const widget = new IdPPage(driver.webDriver);
@@ -79,6 +80,7 @@ browserDescribe('WebDriver redirect IdP test', driver => {
   });
 
   // Redirect works with middleware for now
+  // eslint-disable-next-line no-restricted-properties
   it.skip('is blocked by middleware', async function () {
     if (driver.isCompatLayer()) {
       console.warn('Skipping middleware tests in compat');
@@ -106,6 +108,7 @@ browserDescribe('WebDriver redirect IdP test', driver => {
     expect(await driver.getUserSnapshot()).to.be.null;
   });
 
+  // eslint-disable-next-line no-restricted-properties
   it.skip('can link with another account account', async () => {
     // First, sign in anonymously
     const { user: anonUser }: UserCredential = await driver.call(
@@ -128,6 +131,7 @@ browserDescribe('WebDriver redirect IdP test', driver => {
     expect(user.email).to.eq('bob@bob.test');
   });
 
+  // eslint-disable-next-line no-restricted-properties
   it.skip('can be converted to a credential', async () => {
     // Start with redirect
     await driver.callNoWait(RedirectFunction.IDP_REDIRECT);
@@ -156,6 +160,7 @@ browserDescribe('WebDriver redirect IdP test', driver => {
     expect(second.providerData).to.eql(first.providerData);
   });
 
+  // eslint-disable-next-line no-restricted-properties
   it.skip('handles account exists different credential errors', async () => {
     // Start with redirect and a verified account
     await driver.callNoWait(RedirectFunction.IDP_REDIRECT);
@@ -191,6 +196,7 @@ browserDescribe('WebDriver redirect IdP test', driver => {
     ]);
   });
 
+  // eslint-disable-next-line no-restricted-properties
   it.skip('does not auto-upgrade anon accounts', async () => {
     const { user: anonUser }: UserCredential = await driver.call(
       AnonFunction.SIGN_IN_ANONYMOUSLY
@@ -208,6 +214,7 @@ browserDescribe('WebDriver redirect IdP test', driver => {
     expect(curUser.uid).not.to.eq(anonUser.uid);
   });
 
+  // eslint-disable-next-line no-restricted-properties
   it.skip('linking with anonymous user upgrades account', async () => {
     const { user: anonUser }: UserCredential = await driver.call(
       AnonFunction.SIGN_IN_ANONYMOUSLY
@@ -226,6 +233,7 @@ browserDescribe('WebDriver redirect IdP test', driver => {
     expect(curUser.isAnonymous).to.be.false;
   });
 
+  // eslint-disable-next-line no-restricted-properties
   it.skip('is possible to link with different email', async () => {
     const { user: emailUser }: UserCredential = await driver.call(
       EmailFunction.CREATE_USER,
@@ -249,6 +257,7 @@ browserDescribe('WebDriver redirect IdP test', driver => {
     expect(curUser.providerData.length).to.eq(2);
   });
 
+  // eslint-disable-next-line no-restricted-properties
   it.skip('is possible to link with the same email', async () => {
     const { user: emailUser }: UserCredential = await driver.call(
       EmailFunction.CREATE_USER,
@@ -291,6 +300,7 @@ browserDescribe('WebDriver redirect IdP test', driver => {
       await driver.call(CoreFunction.SIGN_OUT);
     });
 
+    // eslint-disable-next-line no-restricted-properties
     it.skip('a user can sign in again', async () => {
       // Sign in using pre-poulated user
       await driver.callNoWait(RedirectFunction.IDP_REDIRECT);
@@ -307,6 +317,7 @@ browserDescribe('WebDriver redirect IdP test', driver => {
       expect(user.email).to.eq(user1.email);
     });
 
+    // eslint-disable-next-line no-restricted-properties
     it.skip('reauthenticate works for the correct user', async () => {
       // Sign in using pre-poulated user
       await driver.callNoWait(RedirectFunction.IDP_REDIRECT);
@@ -332,6 +343,7 @@ browserDescribe('WebDriver redirect IdP test', driver => {
       expect(user.email).to.eq(user1.email);
     });
 
+    // eslint-disable-next-line no-restricted-properties
     it.skip('reauthenticate throws for wrong user', async function () {
       // Test is ignored for now as it fails on Chrome version 111+.
       // TODO(b/297245662): Investigate and unskip the test.
@@ -359,6 +371,7 @@ browserDescribe('WebDriver redirect IdP test', driver => {
       );
     });
 
+    // eslint-disable-next-line no-restricted-properties
     it.skip('handles aborted sign ins', async function () {
       // Test is ignored for now as it fails on Chrome version 111+.
       // TODO(b/297245662): Investigate and unskip the test.

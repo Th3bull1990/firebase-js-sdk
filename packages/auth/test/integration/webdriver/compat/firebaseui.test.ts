@@ -51,6 +51,7 @@ browserDescribe('WebDriver integration with FirebaseUI', driver => {
     expect(snap.uid).to.be.a('string');
   });
 
+  // eslint-disable-next-line no-restricted-properties
   it.skip('allows google redirect sign in', async () => {
     const page = await startUi();
     await page.clickGoogleSignIn();
